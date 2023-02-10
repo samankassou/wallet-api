@@ -36,6 +36,14 @@ class AuthController extends Controller
 
             $user = User::where('email', $request->email)->first();
 
+            // if the user is not active
+            if (!$user->status) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'The user account is not active',
+                ], 401);
+            }
+
             return response()->json([
                 'status'  => true,
                 'message' => 'User logged in successfully !',
@@ -48,6 +56,8 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+
 
     public function register(Request $request)
     {
