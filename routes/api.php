@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\api\V1\AuthController;
-use App\Http\Controllers\api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\V1\AuthController;
+use App\Http\Controllers\api\V1\UserController;
+use App\Http\Controllers\Api\V1\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,5 +33,6 @@ Route::prefix('v1')
                 return $request->user();
             });
             Route::apiResource('users', UserController::class);
+            Route::apiResource('categories', CategoryController::class);
         });
     });
