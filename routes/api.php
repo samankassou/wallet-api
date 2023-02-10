@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,5 +35,6 @@ Route::prefix('v1')
             });
             Route::apiResource('users', UserController::class);
             Route::apiResource('categories', CategoryController::class);
+            Route::apiResource('transactions', TransactionController::class);
         });
     });
