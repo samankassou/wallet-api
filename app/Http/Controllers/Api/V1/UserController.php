@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -17,8 +18,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return response()->json(['users' => $users]);
+        $users = User::with('transactions')->get();
+        return UserResource::collection($users);
     }
 
     /**

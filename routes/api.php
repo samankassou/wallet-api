@@ -23,12 +23,15 @@ Route::prefix('v1')
     ->group(function () {
 
         /* Auth routes */
-        Route::prefix('auth')->middleware('guest')->group(function () {
-            Route::post('/login', [AuthController::class, 'login']);
-            Route::post('/register', [AuthController::class, 'register']);
+        Route::prefix('auth')->group(function () {
+            Route::middleware('guest')->group(function () {
+                Route::post('/login', [AuthController::class, 'login']);
+                Route::post('/register', [AuthController::class, 'register']);
+            });
+            Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
         });
 
-        Route::middleware('auth:sanctum')->group(function () {
+        Route::name('api.')->group(function () {
 
             Route::get('/user', function (Request $request) {
                 return $request->user();

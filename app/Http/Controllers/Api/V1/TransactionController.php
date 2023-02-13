@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TransactionResource;
 use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
@@ -16,8 +17,9 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::all();
-        return response()->json(['transactions' => $transactions]);
+        $transactions = Transaction::with(['user', 'category'])->get();
+        //return response()->json(['transactions' => $transactions]);
+        return TransactionResource::collection($transactions);
     }
 
     /**
@@ -83,10 +85,7 @@ class TransactionController extends Controller
                 ], 404);
             }
 
-            return response()->json([
-                'status'      => true,
-                'transaction' => $transaction,
-            ]);
+            return new TransactionResource($transaction);
         } catch (\Throwable $th) {
             return response()->json([
                 'status'  => false,
