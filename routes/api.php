@@ -19,25 +19,28 @@ use App\Http\Controllers\Api\V1\TransactionController;
 */
 
 
-Route::prefix('v1')
-    ->group(function () {
+/* Auth routes */
 
-        /* Auth routes */
-        Route::prefix('auth')->group(function () {
-            Route::middleware('guest')->group(function () {
-                Route::post('/login', [AuthController::class, 'login']);
-                Route::post('/register', [AuthController::class, 'register']);
-            });
-            Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-        });
-
-        Route::name('api.')->group(function () {
-
-            Route::get('/user', function (Request $request) {
-                return $request->user();
-            });
-            Route::apiResource('users', UserController::class);
-            Route::apiResource('categories', CategoryController::class);
-            Route::apiResource('transactions', TransactionController::class);
-        });
+Route::prefix('auth')->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/register', [AuthController::class, 'register']);
     });
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/user', function () {
+        return response()->json([
+            "data" => auth()->user()
+        ]);
+    });
+
+    Route::apiResource(
+        'users',
+        UserController::class
+    );
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('transactions', TransactionController::class);
+});

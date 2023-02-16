@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryResource;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -15,9 +16,11 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(['categories' => Category::all()]);
+
+        $categories =  Category::paginate(10);
+        return CategoryResource::collection($categories);
     }
 
     /**
