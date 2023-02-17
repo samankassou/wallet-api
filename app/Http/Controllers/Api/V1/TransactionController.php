@@ -18,7 +18,6 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::with(['user', 'category'])->get();
-        //return response()->json(['transactions' => $transactions]);
         return TransactionResource::collection($transactions);
     }
 
@@ -30,40 +29,19 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $validateTransaction = Validator::make($request->all(), [
+        $request->validate(
+            [
                 'type'        => 'required',
                 'amount'      => 'required',
-                'user_id'     => 'required|exists:users,id',
                 'category_id' => 'required|exists:categories,id',
-            ]);
-
-            if ($validateTransaction->fails()) {
-                return response()->json([
-                    'status'  => false,
-                    'message' => 'validation error',
-                    'errors'  => $validateTransaction->errors()
-                ], 401);
-            }
-
-            $transaction = Transaction::create([
-                'type'        => $request->type,
-                'amount'      => $request->amount,
-                'user_id'     => $request->user_id,
-                'category_id' => $request->category_id,
-            ]);
-
-            return response()->json([
-                'status'   => true,
-                'message'  => 'Transaction created successfully!',
-                'transaction' => $transaction,
-            ], 201);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status'  => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
+            ]
+        );
+        Transaction::create([
+            'type'        => $request->type,
+            'amount'      => $request->amount,
+            'user_id'     => $request->user_id,
+            'category_id' => $request->category_id,
+        ]);
     }
 
     /**

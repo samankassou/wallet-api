@@ -20,7 +20,7 @@ class TransactionResource extends JsonResource
             'type'       => $this->type,
             'user'       => new UserResource($this->whenLoaded('user')),
             'category'   => new CategoryResource($this->whenLoaded('category')),
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at,
         ];
     }
