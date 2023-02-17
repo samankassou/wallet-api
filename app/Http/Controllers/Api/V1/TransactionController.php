@@ -17,7 +17,11 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::latest()->with(['user', 'category'])->get();
+        if (auth()->user()->role === "admin") {
+            $transactions = Transaction::latest()->with(['user', 'category'])->get();
+        } else {
+            $transactions = Transaction::where('user_id', auth()->user()->id)->latest()->with(['user', 'category'])->get();
+        }
         return TransactionResource::collection($transactions);
     }
 
