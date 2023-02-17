@@ -17,7 +17,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::with(['user', 'category'])->get();
+        $transactions = Transaction::latest()->with(['user', 'category'])->get();
         return TransactionResource::collection($transactions);
     }
 
@@ -39,7 +39,7 @@ class TransactionController extends Controller
         Transaction::create([
             'type'        => $request->type,
             'amount'      => $request->amount,
-            'user_id'     => $request->user_id,
+            'user_id'     => auth()->user()->id,
             'category_id' => $request->category_id,
         ]);
     }

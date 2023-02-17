@@ -37,10 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
 
-    Route::apiResource(
-        'users',
-        UserController::class
-    );
+    Route::apiResource('users', UserController::class);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('transactions', TransactionController::class);
 });
