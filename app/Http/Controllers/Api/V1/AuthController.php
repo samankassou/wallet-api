@@ -15,9 +15,16 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('email', 'password'), $request->remember)) {
             throw ValidationException::withMessages([
                 'email' => 'Invalid login details',
+            ]);
+        }
+
+        // the user account is disabled
+        if (!auth()->user()->status) {
+            throw ValidationException::withMessages([
+                'email' => 'The user account is disabled',
             ]);
         }
 
