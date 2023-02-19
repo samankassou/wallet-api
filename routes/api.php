@@ -37,6 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
 
+    Route::patch('/users/toggle-status/{user}', [UserController::class, 'toggleStatus']);
+
     Route::apiResource('users', UserController::class);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('transactions', TransactionController::class);

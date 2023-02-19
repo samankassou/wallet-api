@@ -100,6 +100,17 @@ class UserController extends Controller
         }
     }
 
+    public function toggleStatus(Request $request, User $user)
+    {
+        $user->status = !$user->status;
+        $user->save();
+        return response()->json([
+            'status' => true,
+            'user'   => $user,
+            'message' => 'User updated'
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
